@@ -23,6 +23,8 @@ jobs:
           sudo chmod -R 777 /mnt
           sudo mkdir /mnt/docker
           sudo chmod -R 777 /mnt/docker
+          sudo ip a > m.txt
+          sudo cat m.txt
           
       - name: Cloning Docker file
         env:
