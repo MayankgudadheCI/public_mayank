@@ -37,7 +37,7 @@ jobs:
         env:
           MY_TOKEN: ${{secrets.MY_TOKEN}}
         run: |
-          sudo mkdir /root/mayank
-          git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/private_repo.git" /mayank
+          sudo mkdir /mnt/mayank
+          git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/private_repo.git" /mnt/mayank
 
 
