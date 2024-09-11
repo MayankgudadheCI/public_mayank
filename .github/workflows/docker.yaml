@@ -17,6 +17,7 @@ jobs:
       - name: Installation
         run: |
           sudo apt-get update
+          sudo apt-get install curl -y
           sudo apt-get install maven -y
           sudo apt-get install docker -y
           sudo service docker start
@@ -32,4 +33,7 @@ jobs:
       - name: Building image
         run: |
              sudo docker build -t myimg:1.0 /mnt/docker
+      - name: Creating Docker container
+        run: |
              sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
+             sudo curl --retry 10 --retry-delay 10 http://localhost:8080/LoginWebApp || exit 1
