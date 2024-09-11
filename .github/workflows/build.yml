@@ -16,7 +16,7 @@ jobs:
 
       - name: Clone the project repository
         run: |
-          chmod -R 777 /mnt
+          sudo chmod -R 777 /mnt
           git clone "https://github.com/MayankgudadheCI/project.git" /mnt/project
 
       - name: Install Maven
