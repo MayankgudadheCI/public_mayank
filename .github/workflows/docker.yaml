@@ -1,0 +1,23 @@
+name: Build-Docker-image
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Installation
+        run: |
+          sudo apt-get update
+          sudo apt-get install maven -y
+          sudo apt-get install docker -y
+          sudo service docker start
+          
