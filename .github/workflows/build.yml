@@ -5,18 +5,26 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Run a one-line script
-        run:  |
-          cd /mnt
-          git clone "https://github.com/MayankgudadheCI/project.git"
-      - name: Run a multi-line script
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clone the project repository
         run: |
-          apt-get update
-          apt-get install maven -y
-          cd /mnt
+          git clone "https://github.com/MayankgudadheCI/project.git" /mnt/project
+
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install maven -y
+
+      - name: Build with Maven
+        run: |
+          cd /mnt/project
           mvn clean install
+
