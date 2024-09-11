@@ -33,3 +33,10 @@ jobs:
         run: |
           sudo apt-get install docker -y
 
+      - name: Cloning Secret repo
+        env:
+          MY_TOKEN: ${{secrets.MY_TOKEN}}
+        run: |
+          git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/private_repo.git" /mnt
+
+
