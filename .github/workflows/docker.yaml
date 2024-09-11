@@ -1,4 +1,4 @@
-name: Build-Docker-image
+name: Build-Push-Docker-image
 on:
   push:
     branches: [ "main" ]
@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Installation
-        run: | 
+        run: |
           sudo apt-get install docker -y
           sudo service docker start
           sudo chmod -R 777 /mnt
           sudo mkdir /mnt/docker
           sudo chmod -R 777 /mnt/docker
-          
+
       - name: Cloning Docker file
         env:
             MY_TOKEN: ${{secrets.MY_TOKEN}}
@@ -30,12 +30,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image with BuildKit
-        run: |
-          cd /mnt/docker
-          DOCKER_BUILDKIT=1 docker build -t myimg:1.0 .
-   
-      - name: Creating Docker container
-        run: |
-             sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
-
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: gudadhemayank/mydeployimg:latest
