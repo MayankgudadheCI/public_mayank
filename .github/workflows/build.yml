@@ -29,3 +29,7 @@ jobs:
           cd /mnt/project
           mvn clean install
 
+      - name: Install docker
+        run: |
+          sudo apt-get install docker -y
+
