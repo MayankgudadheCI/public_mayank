@@ -32,3 +32,4 @@ jobs:
       - name: Building image
         run: |
              sudo docker build -t myimg:1.0 /mnt/docker
+             sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
