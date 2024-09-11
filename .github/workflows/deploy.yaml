@@ -16,9 +16,9 @@ jobs:
 
       - name: Clone the private project repository
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone https://x-access-token:${GH_TOKEN}@github.com/MayankgudadheCI/project.git /mnt/project
+          git clone https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/project.git /mnt/project
 
       - name: Install Maven
         run: |
