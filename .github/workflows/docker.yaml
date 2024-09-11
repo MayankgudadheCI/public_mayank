@@ -36,5 +36,15 @@ jobs:
       - name: Creating Docker container
         run: |
              sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
-             sudo sleep 20
-             sudo curl --retry 10 --retry-delay 10 http://localhost:8080/LoginWebApp || exit 1
+      - name: Check Docker logs
+        run: sudo docker logs $(sudo docker ps -q)
+
+      - name: List Tomcat webapps
+        run: sudo docker exec $(sudo docker ps -q) ls -la /mnt/apache-tomcat-9.0.93/webapps/
+
+      - name: Verify network
+        run: sudo docker exec $(sudo docker ps -q) curl http://localhost:8080/LoginWebApp
+
+      - name: Test application
+        run: |
+          curl --retry 10 --retry-delay 10 http://localhost:8080/LoginWebApp || exit 1
