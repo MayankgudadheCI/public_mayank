@@ -21,6 +21,8 @@ jobs:
           sudo apt-get install docker -y
           sudo service docker start
           sudo chmod -R 777 /mnt
+          sudo mkdir /mnt/docker
+          sudo chmod -R 777 /mnt/docker
           
       - name: Cloning Docker file
         env:
