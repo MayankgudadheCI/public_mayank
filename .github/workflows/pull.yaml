@@ -1,0 +1,45 @@
+name: Pull and Run Docker Image
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  pull_and_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pull Docker image
+        uses: docker://docker:20.10.7
+        with:
+          args: pull gudadhemayank/mydeployimg:1.0
+
+      - name: Run Docker container
+        uses: docker://docker:20.10.7
+        with:
+          args: run -d -p 8080:8080 --name mycontainer gudadhemayank/mydeployimg:1.0
+
+      - name: Wait for application to be available
+        uses: docker://alpine:latest
+        with:
+          args: sh -c "sleep 30"
+
+      - name: Check Docker container logs
+        uses: docker://docker:20.10.7
+        with:
+          args: logs mycontainer
+
+      - name: Test application
+        uses: docker://alpine:latest
+        with:
+          args: sh -c "apk add --no-cache curl && curl --retry 10 --retry-delay 10 http://localhost:8080/LoginWebApp || exit 1"
+
+      - name: Stop and remove Docker container
+        uses: docker://docker:20.10.7
+        with:
+          args: sh -c "docker stop mycontainer && docker rm mycontainer"
