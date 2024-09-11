@@ -8,7 +8,7 @@ on:
 
 jobs:
   pull_and_run:
-          runs-on: Mayank-Linux
+          runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
