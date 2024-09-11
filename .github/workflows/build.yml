@@ -39,6 +39,7 @@ jobs:
         run: |
           sudo chmod -R 777 /mnt
           sudo mkdir /mnt/mayank
+          chmod -R 777 /mnt/mayank
           git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/private_repo.git" /mnt/mayank
 
 
