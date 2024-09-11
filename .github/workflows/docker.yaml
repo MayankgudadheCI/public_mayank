@@ -38,3 +38,4 @@ jobs:
              sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
       - name: Check Docker logs
         run: sudo docker logs $(sudo docker ps -q)
+

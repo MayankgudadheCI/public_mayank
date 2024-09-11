@@ -1,0 +1,46 @@
+name: Build-Application
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clone the private project repository
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git clone https://x-access-token:${GH_TOKEN}@github.com/MayankgudadheCI/project.git /mnt/project
+
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install maven -y
+
+      - name: Build with Maven
+        run: |
+          cd /mnt/project
+          mvn clean install
+
+      - name: Get_Tomcat
+        run: |
+           sudo apt-get install openjdk-11-jdk git maven wget unzip -y
+           sudo wget wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.93/bin/apache-tomcat-9.0.93.zip /mnt
+           cd /mnt
+           sudo unzip apache-tomcat-9.0.93.zip
+
+      - name: Deploy application on tomcat
+        run: |
+            cd /mnt
+            sudo chmod -R 777 apache-tomcat-9.0.93
+            cd /mnt/apache-tomcat-9.0.93/bin
+            sudo ./startup.sh
+            sudo cp -r /mnt/project/target/LoginWebApp.war /mnt/apache-tomcat-9.0.93/webapps
