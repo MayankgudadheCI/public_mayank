@@ -28,3 +28,7 @@ jobs:
         env:
             MY_TOKEN: ${{secrets.MY_TOKEN}}
         run: git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/Mayank_IMP.git" /mnt/docker
+
+      - name: Building image
+        run: |
+             sudo docker build -t myimg:1.0 /mnt/docker
