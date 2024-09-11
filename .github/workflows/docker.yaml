@@ -30,9 +30,14 @@ jobs:
             MY_TOKEN: ${{secrets.MY_TOKEN}}
         run: git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/Mayank_IMP.git" /mnt/docker
 
-      - name: Building image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image with BuildKit
         run: |
-             sudo docker build -t myimg:1.0 /mnt/docker
+          cd /mnt/docker
+          DOCKER_BUILDKIT=1 docker build -t myimg:1.0 .
+   
       - name: Creating Docker container
         run: |
              sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
