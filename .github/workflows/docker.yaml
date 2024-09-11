@@ -36,4 +36,5 @@ jobs:
       - name: Creating Docker container
         run: |
              sudo docker run -itdp 8080:8080 --name mycont myimg:1.0
+             sudo sleep 20
              sudo curl --retry 10 --retry-delay 10 http://localhost:8080/LoginWebApp || exit 1
