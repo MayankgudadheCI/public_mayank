@@ -41,6 +41,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build and push
         uses: docker/build-push-action@v4
+        run: cd /mnt/docker
         with:
           push: true
           tags: gudadhemayank/mydeployimg:1.0
