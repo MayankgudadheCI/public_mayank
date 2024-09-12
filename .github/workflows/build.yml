@@ -43,3 +43,8 @@ jobs:
           sudo mkdir /mnt/test
           git clone "https://x-access-token:${MY_TOKEN}@github.com/MayankgudadheCI/private_repo.git" /mnt/mayank
 
+      - name: Upload WAR file
+        uses: actions/upload-artifact@v3
+        with:
+          name: LoginWebApp
+          path: mnt/project/target/LoginWebApp.war
