@@ -67,7 +67,7 @@ jobs:
        
       - name: Upload artifacts to S3
         run: |
-          aws s3 create s3://deploy-mayank-mumbai
+          aws s3api create-bucket --bucket deploy-mayank-mumbai --region ap-south-1
           aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp
 
 
