@@ -64,8 +64,24 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
 
+      - name: Set up SSH key
         run: |
-          echo "$PRIVATE_KEY" > private_key.pem
-          sudo chmod 600 private_key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
 
-          sudo scp -i private_key.pem LoginWebApp.war $USER@$HOST:/mnt
+      - name: Add EC2 to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i private_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            # Your deployment commands here
+            echo "Deployment script executed."
+          EOF
+          
+      - name: Clean up
+        run: |
+          rm private_key.pem
+
