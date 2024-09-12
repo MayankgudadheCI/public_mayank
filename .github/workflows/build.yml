@@ -65,7 +65,6 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > private_key.pem
           chmod 600 private_key.pem
-          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
           curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
           sudo scp -i private_key.pem LoginWebApp ec2@ec2-3-109-202-72.ap-south-1.compute.amazonaws.com:/root/server/apache-tomcat-9.0.94/webapps
 
