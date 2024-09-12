@@ -57,10 +57,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
-      - name: Add EC2 to known_hosts
-        run: |
-          ssh-keyscan -H ec2-user >> ~/.ssh/known_hosts
-
 
       - name: Deploy to EC2
         env:
