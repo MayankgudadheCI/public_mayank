@@ -66,6 +66,16 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Verify Private Key File
+        run: |
+          if [ -f /mnt/private_key.pem ]; then
+            echo "Private key file exists."
+          else
+            echo "Private key file does not exist."
+            exit 1
+          fi
+
       - name: Deploy to EC2
         run: |
           ssh -i /mnt/private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << 'EOF'
