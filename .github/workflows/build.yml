@@ -57,6 +57,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
+      - name: Add EC2 to known_hosts
+        run: |
+          ssh-keyscan -H ec2-user >> ~/.ssh/known_hosts
+
 
       - name: Deploy to EC2
         env:
@@ -66,6 +70,6 @@ jobs:
           echo "$EC2_SSH_KEY" > deploy.pem
           chmod 600 deploy.pem
           curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
-          sudo scp -i deploy.pem LoginWebApp.war ec2@15.207.117.26:/mnt
+          sudo scp -i deploy.pem LoginWebApp.war ec2-user@15.207.117.26:/mnt
 
 
