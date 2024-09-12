@@ -1,0 +1,33 @@
+name: Deploy WAR to EC2
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11' 
+
+      - name: Download WAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: LoginWebApp.war
+
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+        run: |
+          echo "$EC2_SSH_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
