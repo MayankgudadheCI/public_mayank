@@ -59,9 +59,9 @@ jobs:
           name: LoginWebApp
       - name: Set up SSH key
         run: |
-          chmod -R 777 /mnt
+          sudo chmod -R 777 /mnt
           echo "${{ secrets.EC2_SSH__KEY }}" > /mnt/private_key.pem
-          chmod 600 /mnt/private_key.pem
+          sudo chmod 600 /mnt/private_key.pem
       - name: Add EC2 to known_hosts
         run: |
           mkdir -p ~/.ssh
