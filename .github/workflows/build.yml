@@ -49,15 +49,3 @@ jobs:
         with:
           name: LoginWebApp
           path: /mnt/project/target/LoginWebApp.war
-
-      - name: Download WAR file
-        uses: actions/download-artifact@v3
-        with:
-          name: LoginWebApp
-
-      - name: List downloaded files
-        run: ls -al  # Verify that the WAR file is downloaded
-
-      - name: Deploy to EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
