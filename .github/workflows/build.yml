@@ -60,8 +60,8 @@ jobs:
 
       - name: Add EC2 to known_hosts
         run: |
-           mkdir -p ~/.ssh
-           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
 
       - name: 
 
