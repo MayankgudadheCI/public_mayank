@@ -64,7 +64,7 @@ jobs:
 
         run: |
           echo "$EC2_SSH_KEY" > deploy.pem
-          sudo hmod 600 deploy.pem
+          sudo chmod 600 deploy.pem
           curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
           sudo scp -i deploy.pem LoginWebApp.war ec2-user@15.207.117.26:/mnt
 
