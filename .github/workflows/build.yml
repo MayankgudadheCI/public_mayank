@@ -67,6 +67,6 @@ jobs:
           echo "$EC2_SSH_KEY" > /mnt/deploy.pem
           sudo chmod 600 /mnt/deploy.pem
           curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
-          sudo scp -i /mnt/deploy.pem LoginWebApp.war ec2-user@15.207.117.26:/mnt
+          sudo scp -i /mnt/deploy.pem /home/runner/work/public_mayank/public_mayank/LoginWebApp ec2-user@15.207.117.26:/mnt
 
 
