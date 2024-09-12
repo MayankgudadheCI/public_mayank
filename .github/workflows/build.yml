@@ -54,3 +54,14 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
+
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+        run: |
+          echo "$EC2_SSH_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
+
+
