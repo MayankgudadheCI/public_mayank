@@ -68,7 +68,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i private_key.pem ec2-user@${{ secrets.HOST }} << 'EOF'
-            # Your deployment commands here
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << 'EOF'
             echo "Deployment script executed."
           EOF
+
