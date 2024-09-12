@@ -49,3 +49,8 @@ jobs:
         with:
           name: LoginWebApp
           path: /mnt/project/target/LoginWebApp.war
+
+      - name: Download war file
+        uses: actions/download-artifact@v3
+        with:
+          name: LoginWebApp
