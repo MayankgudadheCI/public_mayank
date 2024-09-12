@@ -69,19 +69,3 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-      - name: Add EC2 to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to EC2
-        run: |
-          ssh -i private_key.pem ec2-user@${{ secrets.HOST }} << 'EOF'
-            # Your deployment commands here
-            echo "Deployment script executed."
-          EOF
-          
-      - name: Clean up
-        run: |
-          rm private_key.pem
-
