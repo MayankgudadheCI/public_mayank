@@ -57,3 +57,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH__KEY }}" > private_key.pem
+          chmod 600 private_key.pem
