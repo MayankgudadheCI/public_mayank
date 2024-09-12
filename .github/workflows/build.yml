@@ -59,16 +59,17 @@ jobs:
           name: LoginWebApp
       - name: Set up SSH key
         run: |
-          echo "${{ secrets.EC2_SSH__KEY }}" > private_key.pem
-          chmod 600 private_key.pem
+          chmod -R 777 /mnt
+          echo "${{ secrets.EC2_SSH__KEY }}" > /mnt/private_key.pem
+          chmod 600 /mnt/private_key.pem
       - name: Add EC2 to known_hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy to EC2
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << 'EOF'
+          ssh -i /mnt/private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << 'EOF'
             echo "Deployment script executed."
           EOF
+
 
