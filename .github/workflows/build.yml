@@ -61,12 +61,11 @@ jobs:
       - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
 
         run: |
-          sudo chmod -R 777 /mnt
-          echo "$PRIVATE_KEY" > /mnt/deploy.pem
-          sudo chmod 600 /mnt/deploy.pem
-          curl -O https://github.com/${{ github.repository }}/releases/download/${{ github.ref }}/LoginWebApp.war
-          sudo scp -i /mnt/deploy.pem /home/runner/work/public_mayank/public_mayank/LoginWebApp.war ec2-user@15.207.117.26:/mnt
+          echo "$PRIVATE_KEY" > private_key.pem
+          sudo chmod 600 private_key.pem
 
-
+          scp -i private_key.pem LoginWebApp.war $USER@$HOST:/mnt
