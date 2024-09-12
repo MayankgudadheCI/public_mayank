@@ -57,9 +57,3 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
-
-      - name: Deploy to EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          HOST: ${{ secrets.HOST }}
-          USER: ${{ secrets.USER }}
