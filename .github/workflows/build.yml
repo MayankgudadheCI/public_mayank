@@ -51,10 +51,10 @@ jobs:
           path: /mnt/project/target/LoginWebApp.war
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
+     needs: build
+     runs-on: ubuntu-latest
 
-    steps:
+     steps:
       - name: Download WAR file
         uses: actions/download-artifact@v3
         with:
