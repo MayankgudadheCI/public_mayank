@@ -57,29 +57,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
-      - name: Set up SSH key
-        run: |
-          sudo chmod -R 777 /mnt
-          echo "${{ secrets.EC2_SSH__KEY }}" > /mnt/private_key.pem
-          sudo chmod 600 /mnt/private_key.pem
-      - name: Add EC2 to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1  
 
-      - name: Verify Private Key File
-        run: |
-          if [ -f /mnt/private_key.pem ]; then
-            echo "Private key file exists."
-          else
-            echo "Private key file does not exist."
-            exit 1
-          fi
-
-      - name: Deploy to EC2
-        run: |
-          ssh -i /mnt/private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.HOST }} << 'EOF'
-            echo "Deployment script executed."
-          EOF
 
 
