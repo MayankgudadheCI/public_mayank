@@ -76,7 +76,9 @@ jobs:
 
       - name: Upload artifacts to S3
         run: |
-          aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp
+          aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp.war
+
+
 
 
 
