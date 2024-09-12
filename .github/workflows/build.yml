@@ -63,9 +63,3 @@ jobs:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
-
-      - name: Set up SSH key
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-
