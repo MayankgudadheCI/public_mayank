@@ -28,6 +28,7 @@ jobs:
         run: |
           cd /mnt/project
           mvn clean install
+          mvn package
 
       - name: Install docker
         run: |
