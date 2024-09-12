@@ -65,9 +65,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1  
        
+      - name: Check if S3 bucket exists
+        run: |
+          if aws s3api head-bucket --bucket deploy-mayank-mumbai 2>/dev/null; then
+            echo "Bucket already exists."
+          else
+            echo "Creating bucket..."
+          aws s3api create-bucket --bucket deploy-mayank-mumbai --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+          fi
+
       - name: Upload artifacts to S3
         run: |
-          aws s3api create-bucket --bucket deploy-mayank-mumbai --region ap-south-1
           aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp
+
 
 
