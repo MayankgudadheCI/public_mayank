@@ -63,6 +63,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
 
         run: |
+          sudo chmod -R 777 /mnt
           echo "$EC2_SSH_KEY" > /mnt/deploy.pem
           cd /mnt
           sudo chmod 600 deploy.pem
