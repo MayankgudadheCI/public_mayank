@@ -68,4 +68,4 @@ jobs:
           echo "$PRIVATE_KEY" > private_key.pem
           sudo chmod 600 private_key.pem
 
-          scp -i private_key.pem LoginWebApp.war $USER@$HOST:/mnt
+          sudo scp -i private_key.pem LoginWebApp.war $USER@$HOST:/mnt
