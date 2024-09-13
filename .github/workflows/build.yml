@@ -78,15 +78,6 @@ jobs:
         run: |
           aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp.war
 
-      - name: Create CodeDeploy deployment
-        run: |
-          aws deploy create-deployment \
-            --application-name LoginWebApp \
-            --deployment-group-name LoginWebApp \
-            --revision "{\"revisionType\":\"S3\",\"s3Location\":{\"bucket\":\"deploy-mayank-mumbai\",\"key\":\"deployment-package.zip\",\"bundleType\":\"zip\"}}" \
-            --description "Deployment triggered by GitHub Actions"
-
-
 
 
 
