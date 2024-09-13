@@ -89,9 +89,9 @@ jobs:
 
       - name: Get terraform script
         run: |
-           chmod -R 777 /mnt
+           sudo chmod -R 777 /mnt
            sudo mkdir /mnt/infra
-           chmod -R 777 /mnt/infra
+           sudo chmod -R 777 /mnt/infra
            git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
 
 
