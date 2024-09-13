@@ -91,7 +91,7 @@ jobs:
      
       - name: Terraform Plan
         run: |
-          cd /mnt/infra/Test
+          cd /mnt/infra
           terraform plan
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
