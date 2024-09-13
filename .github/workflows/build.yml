@@ -85,11 +85,12 @@ jobs:
 
       - name: Get terraform script
         run: |
-           git clone "https://github.com/MayankgudadheCI/Test.git" 
-
+           git clone "https://github.com/MayankgudadheCI/Test.git" /mnt
      
       - name: Terraform Plan
-        run: terraform plan
+        run: |
+          cd /mnt/Test
+          terraform plan
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
