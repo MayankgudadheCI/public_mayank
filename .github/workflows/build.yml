@@ -91,7 +91,7 @@ jobs:
      
       - name: Terraform Plan
         run: |
-          cd /mnt/Terraform
+          cd /mnt/infra/Terraform
           terraform init
           terraform plan
         env:
@@ -100,7 +100,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          cd /mnt/Terraform
+          cd /mnt/infra/Terraform
           terraform apply -auto-approve
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
