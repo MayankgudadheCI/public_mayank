@@ -85,11 +85,13 @@ jobs:
 
       - name: Get terraform script
         run: |
-           git clone "https://github.com/MayankgudadheCI/Test.git" /mnt
+           sudo mkdir /mnt/infra
+           sudo chmod -R 777 /mnt/infra
+           git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
      
       - name: Terraform Plan
         run: |
-          cd /mnt/Test
+          cd /mnt/infra/Test
           terraform plan
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
