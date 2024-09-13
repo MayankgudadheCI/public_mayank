@@ -78,14 +78,10 @@ jobs:
         run: |
           aws s3 cp LoginWebApp.war s3://deploy-mayank-mumbai/LoginWebApp.war
 
-      - name: Installing Terraform 
-        run: |
-          sudo apt update
-          sudo apt install -y wget gnupg
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt update
-          sudo apt install terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
 
       - name: Get terraform script
         run: |
@@ -93,6 +89,8 @@ jobs:
            sudo mkdir /mnt/infra
            sudo chmod -R 777 /mnt/infra
            git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
+
+     
 
 
 
