@@ -87,6 +87,13 @@ jobs:
           sudo apt update
           sudo apt install terraform
 
+      - name: Get terraform script
+        run: |
+           chmod -R 777 /mnt
+           sudo mkdir /mnt/infra
+           chmod -R 777 /mnt/infra
+           git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
+
 
 
 
