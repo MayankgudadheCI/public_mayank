@@ -99,7 +99,9 @@ jobs:
           TF_VAR_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          cd /mnt/infra
+          terraform apply -auto-approve
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
