@@ -39,21 +39,21 @@ jobs:
         terraform_version: 1.5.6
 
     - name: Download terraform.tfstate from S3
-      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/terraform.tfstate
+      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/Test/terraform.tfstate
 
     - name: Clean Terraform Cache
       run: |
-        cd /mnt/infra
+        cd /mnt/infra/Test
         rm -rf .terraform
 
     - name: Initialize Terraform
       run: |
-        cd /mnt/infra
+        cd /mnt/infra/Test
         terraform init
 
     - name: Terraform Destroy
       run: |
-        cd /mnt/infra
+        cd /mnt/infra/Test
         terraform destroy -auto-approve
 
     - name: Clean up terraform.tfstate
