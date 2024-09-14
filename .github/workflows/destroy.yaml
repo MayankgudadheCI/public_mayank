@@ -39,7 +39,9 @@ jobs:
         terraform_version: 1.5.6
 
     - name: Download terraform.tfstate from S3
-      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /Test/terraform.tfstate
+      run: |
+        sudo chmod -R 777 Test
+        aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /Test/terraform.tfstate
 
     - name: Clean Terraform Cache
       run: |
