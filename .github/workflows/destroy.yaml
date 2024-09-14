@@ -1,7 +1,7 @@
 name: Destroy Infrastructure
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   destroy:
@@ -26,11 +26,13 @@ jobs:
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.5.0 
+        terraform_version: 1.5.0
 
     - name: Download terraform.tfstate from S3
-      run: |
-        aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate terraform.tfstate
+      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate terraform.tfstate
+
+    - name: Clean Terraform Cache
+      run: rm -rf .terraform
 
     - name: Initialize Terraform
       run: terraform init
@@ -40,4 +42,3 @@ jobs:
 
     - name: Clean up terraform.tfstate
       run: rm -f terraform.tfstate
-
