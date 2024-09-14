@@ -31,7 +31,7 @@ jobs:
         sudo chmod -R 777 /mnt
         sudo mkdir /mnt/infra
         sudo chmod -R 777 /mnt/infra
-        git clone "https://github.com/MayankgudadheCI/Test.git" 
+        git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
            
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v2
@@ -39,24 +39,24 @@ jobs:
         terraform_version: 1.5.6
 
     - name: Download terraform.tfstate from S3
-      run: |
-        sudo chmod -R 777 Test
-        aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /Test/terraform.tfstate
+      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/Terraform/terraform.tfstate
 
     - name: Clean Terraform Cache
       run: |
-        cd Test
+        cd /mnt/infra/Terraform
         rm -rf .terraform
 
     - name: Initialize Terraform
       run: |
-        cd Test
+        cd /mnt/infra/Terraform
         terraform init
 
     - name: Terraform Destroy
       run: |
-        cd Test
+        cd /mnt/infra/Terraform
         terraform destroy -auto-approve
 
     - name: Clean up terraform.tfstate
-      run: rm -f terraform.tfstate
+      run: |
+        cd /mnt/infra/Terraform
+        rm -f terraform.tfstate
