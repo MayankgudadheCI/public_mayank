@@ -1,7 +1,7 @@
 name: Destroy Infrastructure
 
 on:
-  workflow_dispatch: # Allows you to manually trigger this workflow from the GitHub Actions tab
+  workflow_dispatch: 
 
 jobs:
   destroy:
