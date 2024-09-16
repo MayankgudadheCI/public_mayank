@@ -40,7 +40,7 @@ jobs:
     - name: Download terraform.tfstate from S3
       uses: jakejarvis/s3-sync-action@v0.5.0
       with:
-          args: sync s3://deploy-mayank-mumbai/terraform/state/ /mnt/infra/Terraform/
+          args: sync s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/Terraform/
       env:
           AWS_S3_BUCKET: deploy-mayank-mumbai
           AWS_REGION: ap-south-1
