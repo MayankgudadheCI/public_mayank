@@ -41,6 +41,9 @@ jobs:
       uses: jakejarvis/s3-sync-action@v0.5.0
       with:
           args: sync s3://deploy-mayank-mumbai/terraform/state/ /mnt/infra/Terraform/
+      env:
+          AWS_S3_BUCKET: deploy-mayank-mumbai
+          AWS_REGION: ap-south-1
 
     - name: List Terraform Directory
       run: ls -al /mnt/infra/Terraform
