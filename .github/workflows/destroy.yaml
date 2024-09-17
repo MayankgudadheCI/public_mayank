@@ -22,8 +22,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install git -y
-        sudo mkdir -p /mnt/infra
-        sudo git clone "https://github.com/MayankgudadheCI/Test1.git" /mnt/infra
+        sudo mkdir -p /mnt/infra/Terraform
+        sudo chown -R $(whoami):$(whoami) /mnt/infra
+        git clone "https://github.com/MayankgudadheCI/Test1.git" /mnt/infra
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v2
