@@ -23,6 +23,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install git -y
         sudo mkdir -p /mnt/infra
+        sudo chmod -R 777 /mnt/infra
         sudo chown -R $(sudo whoami):$(sudo whoami) /mnt/infra
         git clone "https://github.com/MayankgudadheCI/Test1.git" /mnt/infra
 
