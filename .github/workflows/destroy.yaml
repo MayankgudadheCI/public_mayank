@@ -38,11 +38,9 @@ jobs:
         terraform_version: 1.5.6
 
     - name: Download terraform.tfstate from S3
-      uses: aws-actions/s3-get-object@v1
+      uses: aws-actions/aws-s3-sync@v1
       with:
-        bucket: deploy-mayank-mumbai
-        key: terraform/state/terraform.tfstate
-        path: /mnt/infra/Terraform/terraform.tfstate
+        args: sync s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/Terraform/
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
