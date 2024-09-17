@@ -38,14 +38,7 @@ jobs:
         terraform_version: 1.5.6
 
     - name: Download terraform.tfstate from S3
-      uses: jakejarvis/s3-sync-action@v0.5.0
-      with:
-         args: sync s3://deploy-mayank-mumbai/terraform/state/ /mnt/infra/Terraform/
-      env:
-         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         AWS_REGION: ap-south-1
-
+      run: aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate /mnt/infra/Terraform/terraform.tfstate
 
     - name: List Terraform Directory
       run: ls -al /mnt/infra/Terraform
