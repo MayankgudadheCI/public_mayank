@@ -18,6 +18,7 @@ jobs:
         run: |
           sudo chmod -R 777 /mnt
           git clone "https://github.com/MayankgudadheCI/project.git" /mnt/project
+
       - name: Install Maven
         run: |
           sudo apt-get update
@@ -29,13 +30,13 @@ jobs:
           mvn clean install
           mvn package
 
-      - name: Install docker
+      - name: Install Docker
         run: |
           sudo apt-get install docker -y
 
       - name: Cloning Secret repo
         env:
-          MY_TOKEN: ${{secrets.MY_TOKEN}}
+          MY_TOKEN: ${{ secrets.MY_TOKEN }}
         run: |
           sudo chmod -R 777 /mnt
           sudo mkdir /mnt/mayank
@@ -48,11 +49,12 @@ jobs:
         with:
           name: LoginWebApp
           path: /mnt/project/target/LoginWebApp.war
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps: 
-      - name: Download war file
+      - name: Download WAR file
         uses: actions/download-artifact@v3
         with:
           name: LoginWebApp
@@ -63,14 +65,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1  
-       
+
       - name: Check if S3 bucket exists
         run: |
           if aws s3api head-bucket --bucket deploy-mayank-mumbai 2>/dev/null; then
             echo "Bucket already exists."
           else
             echo "Creating bucket..."
-          aws s3api create-bucket --bucket deploy-mayank-mumbai --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+            aws s3api create-bucket --bucket deploy-mayank-mumbai --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
           fi
 
       - name: Upload artifacts to S3
@@ -82,12 +84,12 @@ jobs:
         with:
           terraform_version: 1.5.0
 
-      - name: Get terraform script
+      - name: Get Terraform script
         run: |
            sudo mkdir /mnt/infra
            sudo chmod -R 777 /mnt/infra
            git clone "https://github.com/MayankgudadheCI/Test.git" /mnt/infra
-     
+
       - name: Terraform Plan
         run: |
           cd /mnt/infra/Terraform
@@ -104,3 +106,28 @@ jobs:
         env:
           TF_VAR_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout InSpec Tests
+        run: |
+          sudo mkdir /mnt/inspec
+          sudo chmod -R 777 /mnt/inspec
+          git clone "https://github.com/MayankgudadheCI/inspec-tests.git" /mnt/inspec
+
+      - name: Install InSpec
+        run: |
+          sudo apt-get update
+          sudo apt-get install ruby -y
+          sudo gem install inspec
+
+      - name: Run InSpec Tests
+        run: |
+          cd /mnt/inspec
+          inspec exec . --target aws://
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-south-1
