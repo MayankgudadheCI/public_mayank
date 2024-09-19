@@ -19,13 +19,16 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'  
-          
+          ruby-version: '3.0'  # Specify the Ruby version you need
+
       - name: Install InSpec
-        run: gem install inspec
+        run: |
+          gem install inspec
+          inspec --version  # Check if InSpec installed correctly
 
       - name: Run InSpec Tests
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: inspec exec ./my_profile -t aws://
+        run: |
+          inspec exec ./my_profile -t aws://
