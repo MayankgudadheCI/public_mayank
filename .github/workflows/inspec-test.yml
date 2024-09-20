@@ -35,7 +35,10 @@ jobs:
 
       - name: Install InSpec
         run: |
-          gem install inspec
+          gem install inspec --user-install
+
+      - name: Update PATH
+        run: echo "$HOME/.gem/ruby/3.0.0/bin:$PATH" >> $GITHUB_ENV
 
       - name: Run InSpec Tests
         env:
