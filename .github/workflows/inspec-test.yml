@@ -13,10 +13,10 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         aws-region: ap-south-1
- 
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
       - name: Download Terraform State
         run: |
           aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate ./terraform.tfstate
@@ -24,10 +24,11 @@ jobs:
       - name: Get VPC ID and Instance ID from tfstate
         id: tfstate
         run: |
+          set -e
           VPC_ID=$(jq -r '.resources[] | select(.type=="aws_vpc") | .instances[0].attributes.id' terraform.tfstate)
           INSTANCE_ID=$(jq -r '.resources[] | select(.type=="aws_instance") | .instances[0].attributes.id' terraform.tfstate)
-          echo "::set-output name=vpc_id::$VPC_ID"
-          echo "::set-output name=instance_id::$INSTANCE_ID"
+          echo "vpc_id=$VPC_ID" >> $GITHUB_ENV
+          echo "instance_id=$INSTANCE_ID" >> $GITHUB_ENV
 
       - name: Install AWS CLI
         run: |
@@ -38,14 +39,14 @@ jobs:
           gem install inspec --user-install
 
       - name: Update PATH
-        run: echo "$HOME/.gem/ruby/3.0.0/bin:$PATH" >> $GITHUB_ENV
+        run: echo "/home/runner/.gem/ruby/3.0.0/bin:$PATH" >> $GITHUB_PATH
 
       - name: Run InSpec Tests
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'ap-south-1' 
-          VPC_ID: ${{ steps.tfstate.outputs.vpc_id }}
-          INSTANCE_ID: ${{ steps.tfstate.outputs.instance_id }}
+          VPC_ID: ${{ env.vpc_id }}
+          INSTANCE_ID: ${{ env.instance_id }}
         run: |
-          inspec exec ./inspec/profile -t aws:// 
+          inspec exec ./inspec/profile -t aws://
