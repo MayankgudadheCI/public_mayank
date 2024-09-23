@@ -38,6 +38,8 @@ jobs:
       - name: Install Bundler Locally
         run: |
           gem install bundler --user-install
+          echo "Adding gem binaries to PATH"
+          echo "export PATH=\$PATH:\$HOME/.gem/ruby/3.0.0/bin" >> $GITHUB_ENV
           echo "Bundler Version:"
           ~/.gem/ruby/3.0.0/bin/bundler --version
 
@@ -49,4 +51,4 @@ jobs:
 
       - name: Run InSpec Tests
         run: |
-          ~/.gem/ruby/3.0.0/bin/inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+          inspec exec ./inspec/profile/controls/inspec.rb -t aws://
