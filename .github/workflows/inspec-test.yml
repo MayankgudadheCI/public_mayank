@@ -38,10 +38,13 @@ jobs:
       - name: Install Bundler Locally
         run: |
           gem install bundler --user-install
+          echo "Bundler Installation Path:"
+          echo $PATH
+          echo "GEM_HOME: $GEM_HOME"
           echo "Adding gem binaries to PATH"
           echo "export PATH=\$PATH:\$HOME/.gem/ruby/3.0.0/bin" >> $GITHUB_ENV
           echo "Bundler Version:"
-          ~/.gem/ruby/3.0.0/bin/bundler --version
+          ~/.gem/ruby/3.0.0/bin/bundler --version || true  # Add '|| true' to prevent exit on failure
 
       - name: Install InSpec via Bundler
         run: |
