@@ -58,4 +58,4 @@ jobs:
 
       - name: Run InSpec Tests
         run: |
-          inspec exec inspec/profile/inspec.rb -t aws://
+          inspec exec public_mayank/inspec/profile/inspec.rb aws://
