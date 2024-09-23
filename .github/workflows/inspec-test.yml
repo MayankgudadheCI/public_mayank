@@ -39,24 +39,13 @@ jobs:
         run: |
           gem install bundler --user-install
           echo "export PATH=\$PATH:\$HOME/.gem/ruby/3.0.0/bin" >> $GITHUB_ENV
-          echo "Bundler installed. Checking paths..."
-          echo "GEM_BIN: $HOME/.gem/ruby/3.0.0/bin"
-          echo "PATH: $PATH"
-
-      - name: Verify Bundler Installation
-        run: |
-          ~/.gem/ruby/3.0.0/bin/bundler --version || echo "Bundler not found"
 
       - name: Install InSpec via Bundler
         run: |
           echo "source 'https://rubygems.org'" > Gemfile
           echo "gem 'inspec'" >> Gemfile
-          ~/.gem/ruby/3.0.0/bin/bundle install --path vendor/bundle || echo "Failed to run bundler install"
-
-      - name: Verify InSpec Installation
-        run: |
-          ~/.gem/ruby/3.0.0/bin/inspec version || echo "InSpec not found"
+          ~/.gem/ruby/3.0.0/bin/bundle install --path vendor/bundle
 
       - name: Run InSpec Tests
         run: |
-          ~/.gem/ruby/3.0.0/bin/inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+          ~/.gem/ruby/3.0.0/bin/inspec exec ./inspec/profile -t aws://
