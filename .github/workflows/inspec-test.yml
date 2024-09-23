@@ -33,30 +33,23 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential
+          sudo apt-get install -y build-essential libssl-dev git
 
-      - name: Install Ruby and Bundler
+      - name: Install rbenv and Ruby
         run: |
-          sudo apt-get install -y ruby-dev
-          gem install bundler --user-install
-          echo "export PATH=\$HOME/.gem/ruby/3.0.0/bin:\$PATH" >> $GITHUB_ENV
-
-      - name: Verify Bundler Installation
-        run: |
-          echo "Bundler Version:"
-          ~/.gem/ruby/3.0.0/bin/bundler --version || echo "Bundler not found"
-
-      - name: Install InSpec via Bundler
-        run: |
-          echo "source 'https://rubygems.org'" > Gemfile
-          echo "gem 'inspec'" >> Gemfile
-          ~/.gem/ruby/3.0.0/bin/bundle install --path vendor/bundle || echo "Bundler failed to install gems"
+          curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
+          echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+          echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+          source ~/.bashrc
+          rbenv install 3.0.0
+          rbenv global 3.0.0
+          gem install inspec
 
       - name: Verify InSpec Installation
         run: |
-          ~/.gem/ruby/3.0.0/bin/inspec version || echo "InSpec not found"
+          echo "InSpec Version:"
+          inspec version || echo "InSpec not found"
 
       - name: Run InSpec Tests
         run: |
           inspec exec public_mayank/inspec/profile/inspec.rb -t aws://
-
