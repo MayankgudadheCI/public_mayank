@@ -58,4 +58,4 @@ jobs:
 
       - name: Run InSpec Tests
         run: |
-          ~/.gem/ruby/3.0.0/bin/inspec exec inspec/profile/inspec.rb -t aws://
+          inspec exec inspec/profile/inspec.rb -t aws://
