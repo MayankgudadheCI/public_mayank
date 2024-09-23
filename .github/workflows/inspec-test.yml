@@ -3,7 +3,7 @@ name: Run Inspec Tests
 on:
   push:
     branches:
-      - main  # Change as needed
+      - main
   pull_request:
 
 jobs:
@@ -14,6 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Check Inspec Version
+        run: |
+          inspec version
+
       - name: Run Inspec tests
         run: |
-          inspec exec ./inspec/profile/inspec.rb  # Adjust the path as needed
+          inspec exec ./inspec/profile/inspec.rb
