@@ -1,32 +1,19 @@
-name: InSpec Tests
+name: Run Inspec Tests
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # Change as needed
+  pull_request:
 
 jobs:
   inspec:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-
-      - name: Install Dependencies
+      - name: Run Inspec tests
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ruby ruby-dev build-essential
-
-      - name: Install InSpec
-        run: |
-          gem install --user-install inspec
-          echo "$HOME/.gem/ruby/3.0.0/bin" >> $GITHUB_PATH
-
-      - name: Run InSpec Tests
-        run: |
+          inspec exec ./inspec/profile/inspec.rb  # Adjust the path as needed
