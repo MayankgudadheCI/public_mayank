@@ -48,5 +48,6 @@ jobs:
           AWS_REGION: 'ap-south-1' 
           VPC_ID: ${{ env.vpc_id }}
           INSTANCE_ID: ${{ env.instance_id }}
-        run: |
-          inspec exec ./inspec/profile -t aws://
+        run: |  
+          inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+   
