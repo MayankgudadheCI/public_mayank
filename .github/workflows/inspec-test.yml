@@ -37,6 +37,9 @@ jobs:
       - name: Install InSpec
         run: |
           gem install inspec --user-install
+          echo "InSpec Version:"
+          /home/runner/.gem/ruby/3.0.0/bin/inspec --version
+
 
       - name: Update PATH
         run: echo "/home/runner/.gem/ruby/3.0.0/bin:$PATH" >> $GITHUB_PATH
@@ -49,5 +52,6 @@ jobs:
           VPC_ID: ${{ env.vpc_id }}
           INSTANCE_ID: ${{ env.instance_id }}
         run: |  
-          inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+          /home/runner/.gem/ruby/3.0.0/bin/inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+
    
