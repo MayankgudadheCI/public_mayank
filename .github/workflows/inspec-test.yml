@@ -34,11 +34,11 @@ jobs:
         run: |
           sudo apt-get install -y awscli
 
-      - name: Install InSpec
+      - name: Install InSpec via Bundler
         run: |
-          gem install inspec --user-install
-          echo "InSpec Version:"
-          /home/runner/.gem/ruby/3.0.0/bin/inspec --version
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'inspec'" >> Gemfile
+          bundle install --path vendor/bundle
 
 
       - name: Update PATH
