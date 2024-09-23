@@ -31,7 +31,7 @@ jobs:
       - name: Run InSpec Tests
         id: inspec
         run: |
-          inspec exec public_mayank/inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
+          inspec exec /inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
           if [ $? -ne 0 ]; then
             echo "InSpec tests failed"
             exit 1
