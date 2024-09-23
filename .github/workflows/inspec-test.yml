@@ -35,6 +35,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev git
 
+      - name: Cache rbenv and Ruby gems
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.rbenv
+            ~/.gem
+          key: ${{ runner.os }}-rbenv-${{ hashFiles('**/Gemfile.lock') }}
+
       - name: Install rbenv and Ruby
         run: |
           if [ ! -d "$HOME/.rbenv" ]; then
