@@ -18,17 +18,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
+      - name: Cache Ruby gems
+        uses: actions/cache@v3
+        with:
+          path: $HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/cache
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ruby ruby-dev build-essential
-
-      - name: Install InSpec
-        run: |
           gem install --user-install inspec
           echo "$HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/bin" >> $GITHUB_PATH
-          echo "PATH: $PATH"  # Output the current PATH for debugging
-          inspec version  # Check if InSpec was installed correctly
 
       - name: Run InSpec Tests
         run: |
