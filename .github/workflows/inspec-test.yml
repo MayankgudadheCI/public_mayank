@@ -26,12 +26,14 @@ jobs:
       - name: Install InSpec
         run: |
           gem install --user-install inspec
-          echo "$HOME/.gem/ruby/3.0.0/bin" >> $GITHUB_PATH
+          echo "$HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/bin" >> $GITHUB_PATH
+          echo "PATH: $PATH"  # Output the current PATH for debugging
+          inspec version  # Check if InSpec was installed correctly
 
       - name: Run InSpec Tests
-        id: inspec
         run: |
-          inspec exec /inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
+          inspec version  # Confirm InSpec is installed
+          inspec exec public_mayank/inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
           if [ $? -ne 0 ]; then
             echo "InSpec tests failed"
             exit 1
