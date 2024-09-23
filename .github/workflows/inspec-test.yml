@@ -38,9 +38,13 @@ jobs:
       - name: Install rbenv and Ruby
         run: |
           curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
-          echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-          echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+          echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $GITHUB_ENV
+          echo 'eval "$(rbenv init -)"' >> $GITHUB_ENV
           source ~/.bashrc
+          git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+          export PATH="$HOME/.rbenv/bin:$PATH"
+          export RBENV_ROOT="$HOME/.rbenv"
+          eval "$(rbenv init -)"
           rbenv install 3.0.0
           rbenv global 3.0.0
           gem install inspec
@@ -48,8 +52,8 @@ jobs:
       - name: Verify InSpec Installation
         run: |
           echo "InSpec Version:"
-          inspec version || echo "InSpec not found"
+          ~/.rbenv/shims/inspec version || echo "InSpec not found"
 
       - name: Run InSpec Tests
         run: |
-          inspec exec public_mayank/inspec/profile/inspec.rb -t aws://
+          ~/.rbenv/shims/inspec exec public_mayank/inspec/profile/inspec.rb -t aws://
