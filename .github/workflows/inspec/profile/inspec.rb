@@ -22,10 +22,12 @@ control 'aws-security-group-1.0' do
         'protocol' => 'tcp',
         'cidr_blocks' => ['0.0.0.0/0']
       }
-    )}
-    
-    it { should include(
-      {
+    )}Command 'inspec' not found, did you mean:
+
+    command 'inspect' from deb libboost1.71-tools-dev (1.71.0-6ubuntu6)
+    command 'inspect' from deb libboost1.67-tools-dev (1.67.0-17ubuntu8)
+  
+  Try: sudo apt install <deb name>
         'from_port' => 22,
         'to_port' => 22,
         'protocol' => 'tcp',
