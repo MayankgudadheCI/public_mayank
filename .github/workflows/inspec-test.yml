@@ -2,6 +2,7 @@ name: InSpec Tests
 
 on:
   workflow_dispatch:
+
 jobs:
   inspec:
     runs-on: ubuntu-latest
@@ -17,54 +18,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Download Terraform State
-        run: |
-          aws s3 cp s3://deploy-mayank-mumbai/terraform/state/terraform.tfstate ./terraform.tfstate
-
-      - name: Get VPC ID and Instance ID from tfstate
-        id: tfstate
-        run: |
-          set -e
-          VPC_ID=$(jq -r '.resources[] | select(.type=="aws_vpc") | .instances[0].attributes.id' terraform.tfstate)
-          INSTANCE_ID=$(jq -r '.resources[] | select(.type=="aws_instance") | .instances[0].attributes.id' terraform.tfstate)
-          echo "vpc_id=$VPC_ID" >> $GITHUB_ENV
-          echo "instance_id=$INSTANCE_ID" >> $GITHUB_ENV
-
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev git
+          sudo apt-get install -y ruby ruby-dev build-essential
 
-      - name: Cache rbenv and Ruby gems
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.rbenv
-            ~/.gem
-          key: ${{ runner.os }}-rbenv-${{ hashFiles('**/Gemfile.lock') }}
-
-      - name: Install rbenv and Ruby
+      - name: Install InSpec
         run: |
-          if [ ! -d "$HOME/.rbenv" ]; then
-            curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
-            echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $GITHUB_ENV
-            echo 'eval "$(rbenv init -)"' >> $GITHUB_ENV
-          fi
-          export PATH="$HOME/.rbenv/bin:$PATH"
-          export RBENV_ROOT="$HOME/.rbenv"
-          eval "$(rbenv init -)"
-          if [ ! -d "$HOME/.rbenv/plugins/ruby-build" ]; then
-            git clone https://github.com/rbenv/ruby-build.git "$HOME/.rbenv/plugins/ruby-build"
-          fi
-          rbenv install -s 3.0.0
-          rbenv global 3.0.0
           gem install inspec
-
-      - name: Verify InSpec Installation
-        run: |
-          echo "InSpec Version:"
-          ~/.rbenv/shims/inspec version || echo "InSpec not found"
 
       - name: Run InSpec Tests
         run: |
-          ~/.rbenv/shims/inspec exec public_mayank/inspec/profile/inspec.rb -t aws://
+          inspec exec public_mayank/inspec/profile/inspec.rb -t aws://
