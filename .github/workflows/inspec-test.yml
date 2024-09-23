@@ -32,15 +32,14 @@ jobs:
           sudo apt-get install -y ruby ruby-dev build-essential
           gem install --user-install inspec
           echo "$HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/bin" >> $GITHUB_PATH
-
+          
       - name: Run InSpec Tests
+        env:
+          VPC_ID: ${{ secrets.VPC_ID }}
+          INSTANCE_ID: ${{ secrets.INSTANCE_ID }}
         run: |
-          inspec version  # Confirm InSpec is installed
-          inspec exec public_mayank/inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
-          if [ $? -ne 0 ]; then
-            echo "InSpec tests failed"
-            exit 1
-          fi
+          inspec exec /inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
+
 
       - name: Upload InSpec Results
         uses: actions/upload-artifact@v3
