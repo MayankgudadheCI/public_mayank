@@ -35,18 +35,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential
 
-      - name: Install Ruby and Bundler
+      - name: Install Bundler Locally
         run: |
-          gem install bundler
+          gem install bundler --user-install
           echo "Bundler Version:"
-          bundler --version
+          ~/.gem/ruby/3.0.0/bin/bundler --version
 
       - name: Install InSpec via Bundler
         run: |
           echo "source 'https://rubygems.org'" > Gemfile
           echo "gem 'inspec'" >> Gemfile
-          bundle install --path vendor/bundle
+          ~/.gem/ruby/3.0.0/bin/bundle install --path vendor/bundle
 
       - name: Run InSpec Tests
         run: |
-          vendor/bundle/ruby/3.0.0/bin/inspec exec ./inspec/profile/controls/inspec.rb -t aws://
+          ~/.gem/ruby/3.0.0/bin/inspec exec ./inspec/profile/controls/inspec.rb -t aws://
