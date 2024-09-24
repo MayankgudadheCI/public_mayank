@@ -8,41 +8,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-
-      - name: Cache Ruby gems
-        uses: actions/cache@v3
-        with:
-          path: $HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/cache
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gem-
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ruby ruby-dev build-essential
-          gem install --user-install inspec
-          echo "$HOME/.gem/ruby/$(ruby -e 'print RUBY_VERSION').0/bin" >> $GITHUB_PATH
+          ruby-version: '3.0'  # Specify the Ruby version you need
           
+      - name: Install InSpec
+        run: |
+          gem install inspec
+          inspec version  # Optional: to verify the installation
+
       - name: Run InSpec Tests
         env:
           VPC_ID: ${{ secrets.VPC_ID }}
           INSTANCE_ID: ${{ secrets.INSTANCE_ID }}
-        run: |
-          inspec exec /inspec/profile/inspec.rb -t aws:// | tee inspec_output.log
-
-
-      - name: Upload InSpec Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: inspec-output
-          path: inspec_output.log
+        run: inspec exec controls/aws_security_group_tests.rb
