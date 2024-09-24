@@ -1,7 +1,12 @@
 name: InSpec Tests
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # Change this to your default branch
+  pull_request:
+    branches:
+      - main  # Change this to your default branch
 
 jobs:
   inspec:
@@ -15,14 +20,15 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'  # Specify the Ruby version you need
-          
+
       - name: Install InSpec
         run: |
           gem install inspec
+          echo "$(ruby -e 'puts Gem.bindir')" >> $GITHUB_ENV  # Add InSpec bin to PATH
           inspec version  # Optional: to verify the installation
 
       - name: Run InSpec Tests
         env:
           VPC_ID: ${{ secrets.VPC_ID }}
           INSTANCE_ID: ${{ secrets.INSTANCE_ID }}
-        run: inspec exec controls/aws_security_group_tests.rb
+        run: inspec exec controls/inspec.rb
