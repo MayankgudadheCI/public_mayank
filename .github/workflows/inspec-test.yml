@@ -1,12 +1,7 @@
 name: InSpec Tests
 
 on:
-  push:
-    branches:
-      - main  # Change this to your default branch
-  pull_request:
-    branches:
-      - main  # Change this to your default branch
+ workflow_dispatch:
 
 jobs:
   inspec:
@@ -31,4 +26,4 @@ jobs:
         env:
           VPC_ID: ${{ secrets.VPC_ID }}
           INSTANCE_ID: ${{ secrets.INSTANCE_ID }}
-        run: inspec exec controls/inspec.rb
+        run: inspec exec inspec/profile/inspec.rb
